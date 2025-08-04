@@ -10,7 +10,7 @@ from typing import Tuple, Dict, List
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(dotenv_path=".env.local") 
 
 logger = dagster.get_dagster_logger()
 

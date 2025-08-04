@@ -1,6 +1,9 @@
 #version: "3.9"
 
 services:
+  dagster:
+    env_file:
+      - .env.local
   # This service runs the postgres DB used by dagster for run storage, schedule storage,
   # and event log storage.
   dagster_postgresql:

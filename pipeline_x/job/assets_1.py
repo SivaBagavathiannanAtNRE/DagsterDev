@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import os
 
 logger = dagster.get_dagster_logger()
-load_dotenv()
+load_dotenv(dotenv_path=".env.local") 
 
 
 @dagster.asset
