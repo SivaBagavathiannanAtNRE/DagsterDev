@@ -1,11 +1,23 @@
 #version: "3.9"
 
+# services:
+#   dagster:
+#     build: .
+#     container_name: dagster
+#     env_file:
+#       - .env.local
+#     ports:
+#       - "3001:3000"  # Optional: adjust if you're running Dagster UI here
+#     volumes:
+#       - .:/app       # Optional: mount your code for live development
+#     working_dir: /app
+#     depends_on:
+#       - dagster_postgresql
+#     networks:
+#       - dagster_network
+#     command: dagster dev -m pipeline_x
+
 services:
-  dagster:
-    env_file:
-      - .env.local
-  # This service runs the postgres DB used by dagster for run storage, schedule storage,
-  # and event log storage.
   dagster_postgresql:
     image: postgres:11
     container_name: dagster_postgresql
@@ -15,6 +27,20 @@ services:
       POSTGRES_DB: "postgres_db"
     networks:
       - dagster_network
+
+
+
+  # This service runs the postgres DB used by dagster for run storage, schedule storage,
+  # and event log storage.
+  # dagster_postgresql:
+  #   image: postgres:11
+  #   container_name: dagster_postgresql
+  #   environment:
+  #     POSTGRES_USER: "postgres_user"
+  #     POSTGRES_PASSWORD: "postgres_password"
+  #     POSTGRES_DB: "postgres_db"
+  #   networks:
+  #     - dagster_network
 
   # This service runs the gRPC server that loads your user code, in both dagster-webserver
   # and dagster-daemon. By setting DAGSTER_CURRENT_IMAGE to its own image, we tell the
@@ -28,6 +54,8 @@ services:
       dockerfile: ./pipeline_x/Dockerfile
     image: pipeline-x
     restart: always
+    env_file:
+      - .env.local  
     environment:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
@@ -54,6 +82,8 @@ services:
       dockerfile: ./pipeline_y/Dockerfile
     image: pipeline-y
     restart: always
+    env_file:
+      - .env.local  
     environment:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
@@ -93,7 +123,7 @@ services:
     expose:
       - "3000"
     ports:
-      - "3000:3000"
+      - "3010:3000"
     environment:
       DAGSTER_POSTGRES_USER: "postgres_user"
       DAGSTER_POSTGRES_PASSWORD: "postgres_password"
