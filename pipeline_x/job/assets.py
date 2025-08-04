@@ -7,7 +7,10 @@ from datetime import datetime, timedelta, date
 from dateutil import parser
 from closeio_api import Client
 from typing import Tuple, Dict, List
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 logger = dagster.get_dagster_logger()
 
@@ -17,6 +20,11 @@ def get_close_api_key():
     region_name = "us-east-1"
     logger.info("This is an info message from Dagster logger.")
 
+    session = boto3.Session(
+        aws_access_key_id=os.getenv('aws_access_key_id'),
+        aws_secret_access_key=os.getenv('aws_secret_access_key'),
+        aws_region=os.getenv('aws_region') 
+    )
 
     client = session.client(
         service_name='secretsmanager',
