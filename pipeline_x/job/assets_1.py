@@ -7,7 +7,6 @@ from datetime import datetime, timedelta, date
 from dateutil import parser
 from closeio_api import Client
 from typing import Tuple, Dict, List
-from modiles.close import
 from dotenv import load_dotenv
 import os
 
